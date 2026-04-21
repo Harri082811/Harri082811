@@ -1,93 +1,101 @@
 function goBack() {
-    history.back();
-  }
-function toggleFullscreen() {
-  const iframe = document.getElementById('iframe');
-  if (iframe.requestFullscreen) {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-       iframe.requestFullscreen();
+    try {
+        const iframe = document.getElementById('iframe');
+        if (iframe.contentWindow && iframe.contentWindow.history.length > 1) {
+            iframe.contentWindow.history.back();
+        } else {
+            window.history.back();
+        }
+    } catch (e) {
+        // Fallback for cross-origin iframes
+        window.history.back();
     }
-  } else if (iframe.mozRequestFullScreen) { // Firefox
-    if (document.mozFullScreenElement) {
-      document.mozCancelFullScreen();
-    } else {
-      iframe.mozRequestFullScreen();
-    }
-  } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari and Opera
-    if (document.webkitFullscreenElement) {
-      document.webkitExitFullscreen();
-    } else {
-      iframe.webkitRequestFullscreen();
-    }
-  } else if (iframe.msRequestFullscreen) { // IE/Edge
-    if (document.msFullscreenElement) {
-      document.msExitFullscreen();
-    } else {
-      iframe.msRequestFullscreen();
-    }
-  }
 }
+
+function toggleFullscreen() {
+    const iframe = document.getElementById('iframe');
+    const container = document.body; // Try to fullscreen the whole page or container
+
+    if (!document.fullscreenElement) {
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.mozRequestFullScreen) {
+            iframe.mozRequestFullScreen();
+        } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
 // Retrieve the app name and image from local storage
 const appName = localStorage.getItem('app-name');
 const appImage = localStorage.getItem('app-image');
 const showNameAndImg = localStorage.getItem('shownameandimg');
 
 // Set the content and src attribute
-document.getElementById('app-name').textContent = appName;
-document.getElementById('app-image').src = appImage;
+const appNameElem = document.getElementById('app-name');
+const appImgElem = document.getElementById('app-image');
+
+if (appNameElem) appNameElem.textContent = appName || "Loading...";
+if (appImgElem) appImgElem.src = appImage || "";
 
 function backtopage() {
-  const type = localStorage.getItem('iframe-type');
-  console.log("iframe-type value:", type);
-  if (type === 'apps') {
-      window.location.href = 'apps.html';
-  } else if (type === 'games') {
-      window.location.href = 'games.html';
-  } else if (type === 'credits') {
-    window.location.href = 'credits.html';
-  } else if (type === 'links') {
-    window.location.href = 'links.html';
-  } else if (type === 'info') {
-    window.location.href = 'index.html';
-  } else if (type === 'home') {
-    window.location.href = 'home.html';
-  } else if (type === 'settings') {
-    window.location.href = 'settings.html';
-  } else if (type === 'websites') {
-    window.location.href = 'websites.html';
-  } else if (type === 'vpns') {
-    window.location.href = 'vpns.html';
-  } else if (type === 'games-no-nav') {
-    window.location.href = 'games-no-nav.html';
-  } else {
-      // Default or error handling, if needed.
-      console.error('Unexpected iframe type:', type);
-  }
+    const type = localStorage.getItem('iframe-type');
+    const mapping = {
+        'apps': 'apps.html',
+        'games': 'games.html',
+        'credits': 'credits.html',
+        'links': 'links.html',
+        'info': 'index.html',
+        'home': 'home.html',
+        'settings': 'settings.html',
+        'websites': 'websites.html',
+        'vpns': 'vpns.html',
+        'games-no-nav': 'games-no-nav.html'
+    };
+    
+    if (mapping[type]) {
+        window.location.href = mapping[type];
+    } else {
+        window.location.href = 'home.html';
+    }
 }
 
 var iframeUrl = localStorage.getItem('storedURL');
 var iframeElement = document.getElementById('iframe');
-if (iframeUrl) {
+if (iframeUrl && iframeElement) {
     iframeElement.src = iframeUrl;
 } else {
     console.error("No URL found in localStorage for the iframe");
 }
 
 function reload() {
-  localStorage.setItem('current-url', iframe.src);
-  iframe.src = localStorage.getItem('current-url');
+    const iframe = document.getElementById('iframe');
+    if (iframe) {
+        const currentSrc = iframe.src;
+        iframe.src = '';
+        setTimeout(() => {
+            iframe.src = currentSrc;
+        }, 10);
+    }
 }
 
-if (showNameAndImg === 'true') {
-  // Set the content and src attribute
-  document.getElementById('app-name').textContent = appName;
-  document.getElementById('app-image').src = appImage;
-  document.getElementById('app-name').style.display = 'inline';
-  document.getElementById('app-image').style.display = 'inline';
-} else {
-  document.getElementById('app-name').style.display = 'none';
-  document.getElementById('app-image').style.display = 'none';
+if (showNameAndImg === 'true' && appNameElem && appImgElem) {
+    appNameElem.style.display = 'inline';
+    appImgElem.style.display = 'inline';
+} else if (appNameElem && appImgElem) {
+    appNameElem.style.display = 'none';
+    appImgElem.style.display = 'none';
 }
-
