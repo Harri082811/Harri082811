@@ -26,7 +26,7 @@
     <i class="fa-solid fa-expand fullscreen-button"></i>
   </a>
     <div class="history-controls">
-      <a class="browser-back" onclick="window.history.back()">
+      <a class="browser-back" onclick="goBack()">
         <i class="fa-solid fa-arrow-left"></i>
       </a>
       <a class="browser-forward" onclick="window.history.forward()">
@@ -37,7 +37,7 @@
       <i class="fa-solid fa-gear"></i>
     </a>
   </div>
-  <iframe id="iframe" src="" frameborder="0" allowfullscreen></iframe>
+  <iframe id="iframe" src="" frameborder="0" allow="fullscreen; autoplay; gamepad; microphone; camera; midi; clipboard-write; web-share" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation"></iframe>
   <input id="key-input" type="text" placeholder="Key" style="display: none;" value="]">
   <input id="website-input" type="text" placeholder="Website" style="display: none;" value="https://classroom.gooogle.com">
   <script src="assets/js/panic.js" defer></script>
@@ -70,3 +70,6 @@
 <script src="assets/js/modal.js" defer></script>
 </body>
 </html>
+
+
+
