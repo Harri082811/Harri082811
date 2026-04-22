@@ -9,6 +9,29 @@
   <link rel="icon" type="image/x-icon" href="assets/img/favicons/google-drive-ico.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" content="notranslate">
+  <script>
+    function backtopage() {
+        window.location.href = 'games.html';
+    }
+
+    function reload() {
+        const iframe = document.getElementById('iframe');
+        if (iframe) {
+            const currentSrc = iframe.src;
+            iframe.src = '';
+            setTimeout(() => { iframe.src = currentSrc; }, 10);
+        }
+    }
+
+    function goBack() {
+        window.location.href = 'games.html';
+    }
+
+    function toggleFullscreen() {
+        // Disabled as requested
+        console.log("Fullscreen is disabled.");
+    }
+  </script>
 </head>
 <body>
   <div class="buttons">
@@ -22,11 +45,11 @@
       <img id="app-image" src="" alt="App Image" width="30" height="30">
       <span id="app-name"></span>
   </div>
-  <a class="fullscreen-button" onclick="toggleFullscreen()">
+  <a class="fullscreen-button" style="opacity: 0.5; cursor: not-allowed;" onclick="toggleFullscreen()">
     <i class="fa-solid fa-expand fullscreen-button"></i>
   </a>
     <div class="history-controls">
-      <a class="browser-back" onclick="window.history.back()">
+      <a class="browser-back" onclick="backtopage()">
         <i class="fa-solid fa-arrow-left"></i>
       </a>
       <a class="browser-forward" onclick="window.history.forward()">
@@ -41,15 +64,15 @@
   <input id="key-input" type="text" placeholder="Key" style="display: none;" value="]">
   <input id="website-input" type="text" placeholder="Website" style="display: none;" value="https://classroom.gooogle.com">
   <script src="assets/js/panic.js" defer></script>
-  <script src="assets/js/settings/index.js"></script>
-  <script src="assets/js/settings.js"></script>
+  <script src="assets/js/settings/index.js" defer></script>
+  <script src="assets/js/settings.js" defer></script>
   <script src="assets/js/cloak.js" defer></script>
-  <script src="assets/js/fixed_iframe.js"></script>
-  <script src="uv/uv.bundle.js" defer></script>
-  <script src="uv/uv.config.js" defer></script>
-  <script src="register-sw.js" defer></script>
-  <script src="search.js" defer></script>
-  <script src="index.js" defer></script>
+  <script src="assets/js/fixed_iframe.js" defer></script>
+  <script src="/uv/uv.bundle.js" defer></script>
+  <script src="/uv/uv.config.js" defer></script>
+  <script src="/register-sw.js" defer></script>
+  <script src="/search.js" defer></script>
+  <script src="/index.js" defer></script>
   <form id="uv-form">
     <input id="uv-search-engine" value="https://www.google.com/search?q=%s" type="hidden"/> 
   </form>
